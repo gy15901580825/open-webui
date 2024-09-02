@@ -654,7 +654,7 @@ OPENAI_API_BASE_URL = os.environ.get("OPENAI_API_BASE_URL", "")
 
 
 if OPENAI_API_BASE_URL == "":
-    OPENAI_API_BASE_URL = "https://api.openai.com/v1"
+    OPENAI_API_BASE_URL = "http://localhost:8088/v1"
 
 OPENAI_API_KEYS = os.environ.get("OPENAI_API_KEYS", "")
 OPENAI_API_KEYS = OPENAI_API_KEYS if OPENAI_API_KEYS != "" else OPENAI_API_KEY
@@ -664,13 +664,13 @@ OPENAI_API_KEYS = PersistentConfig(
     "OPENAI_API_KEYS", "openai.api_keys", OPENAI_API_KEYS
 )
 
-OPENAI_API_BASE_URLS = os.environ.get("OPENAI_API_BASE_URLS", "")
+OPENAI_API_BASE_URLS = os.environ.get("OPENAI_API_BASE_URLS", "http://localhost:8088/v1")
 OPENAI_API_BASE_URLS = (
     OPENAI_API_BASE_URLS if OPENAI_API_BASE_URLS != "" else OPENAI_API_BASE_URL
 )
 
 OPENAI_API_BASE_URLS = [
-    url.strip() if url != "" else "https://api.openai.com/v1"
+    url.strip() if url != "" else "http://localhost:8088/v1"
     for url in OPENAI_API_BASE_URLS.split(";")
 ]
 OPENAI_API_BASE_URLS = PersistentConfig(
@@ -681,12 +681,12 @@ OPENAI_API_KEY = ""
 
 try:
     OPENAI_API_KEY = OPENAI_API_KEYS.value[
-        OPENAI_API_BASE_URLS.value.index("https://api.openai.com/v1")
+        OPENAI_API_BASE_URLS.value.index("http://localhost:8088/v1")
     ]
 except Exception:
     pass
 
-OPENAI_API_BASE_URL = "https://api.openai.com/v1"
+OPENAI_API_BASE_URL = "http://localhost:8088/v1"
 
 ####################################
 # WEBUI
