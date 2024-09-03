@@ -17,14 +17,15 @@
 	import { blobToFile, findWordIndices } from '$lib/utils';
 
 	import { transcribeAudio } from '$lib/apis/audio';
-	import { processDocToVectorDB } from '$lib/apis/rag';
-	import { uploadFile } from '$lib/apis/files';
+	// import { processDocToVectorDB } from '$lib/apis/rag';
+	import { uploadFile, processDocToVectorDB } from '$lib/apis/files';
 
 	import {
 		SUPPORTED_FILE_TYPE,
 		SUPPORTED_FILE_EXTENSIONS,
 		WEBUI_BASE_URL,
-		WEBUI_API_BASE_URL
+		WEBUI_API_BASE_URL,
+		LOCAL_API_BASE_URL
 	} from '$lib/constants';
 
 	import Tooltip from '../common/Tooltip.svelte';
@@ -93,6 +94,13 @@
 	const uploadFileHandler = async (file) => {
 		console.log(file);
 
+		if (!['text/plain'].includes(file['type'])) {
+				toast.error(
+						'Only supports txt type for now. Cannt proceed with the file upload.'
+					);
+				return
+		}
+
 		// Check if the file is an audio file and transcribe/convert it to text file
 		if (['audio/mpeg', 'audio/wav'].includes(file['type'])) {
 			const res = await transcribeAudio(localStorage.token, file).catch((error) => {
@@ -127,7 +135,7 @@
 				fileItem.status = 'uploaded';
 				fileItem.file = uploadedFile;
 				fileItem.id = uploadedFile.id;
-				fileItem.url = `${WEBUI_API_BASE_URL}/files/${uploadedFile.id}`;
+				fileItem.url = `http://${LOCAL_API_BASE_URL}/files/${uploadedFile.id}`;
 
 				// TODO: Check if tools & functions have files support to skip this step to delegate file processing
 				// Default Upload to VectorDB
@@ -156,7 +164,6 @@
 	const processFileItem = async (fileItem) => {
 		try {
 			const res = await processDocToVectorDB(localStorage.token, fileItem.id);
-
 			if (res) {
 				fileItem.status = 'processed';
 				fileItem.collection_name = res.collection_name;

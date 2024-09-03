@@ -8,8 +8,8 @@ export const WEBUI_BASE_URL = browser ? (dev ? `http://${WEBUI_HOSTNAME}` : ``) 
 export const WEBUI_API_BASE_URL = `${WEBUI_BASE_URL}/api/v1`;
 
 export const OLLAMA_API_BASE_URL = `${WEBUI_BASE_URL}/ollama`;
-// export const OPENAI_API_BASE_URL = `${WEBUI_BASE_URL}/openai`;
-export const OPENAI_API_BASE_URL = `${location.hostname}:8088/openai`;
+export const OPENAI_API_BASE_URL = `${WEBUI_BASE_URL}/openai`;
+export const LOCAL_API_BASE_URL = `${location.hostname}:8088/v1`;
 export const AUDIO_API_BASE_URL = `${WEBUI_BASE_URL}/audio/api/v1`;
 export const IMAGES_API_BASE_URL = `${WEBUI_BASE_URL}/images/api/v1`;
 export const RAG_API_BASE_URL = `${WEBUI_BASE_URL}/rag/api/v1`;
